@@ -2,6 +2,8 @@ package com.adaptionsoft.games.trivia.runner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -20,10 +22,10 @@ public class GameRunnerTest {
 			+ "Sue is the current player\r\n" + "They have rolled a 4\r\n" + "Sue's new location is 4\r\n"
 			+ "The category is Pop\r\n" + "Pop Question 0\r\n" + "Answer was corrent!!!!\r\n"
 			+ "Sue now has 1 Gold Coins.\r\n" + "Chet is the current player\r\n" + "They have rolled a 5\r\n"
-			+ "Chet's new location is 10\r\n" + "The category is Sports\r\n" + "Sports Question 0\r\n"
+			+ "Chet's new location is 10\r\n" + "The category is Sports\r\n" + "Sport Question 0\r\n"
 			+ "Question was incorrectly answered\r\n" + "Chet was sent to the penalty box\r\n"
 			+ "Pat is the current player\r\n" + "They have rolled a 5\r\n" + "Pat is getting out of the penalty box\r\n"
-			+ "Pat's new location is 6\r\n" + "The category is Sports\r\n" + "Sports Question 1\r\n"
+			+ "Pat's new location is 6\r\n" + "The category is Sports\r\n" + "Sport Question 1\r\n"
 			+ "Answer was correct!!!!\r\n" + "Pat now has 1 Gold Coins.\r\n" + "Sue is the current player\r\n"
 			+ "They have rolled a 1\r\n" + "Sue's new location is 5\r\n" + "The category is Science\r\n"
 			+ "Science Question 2\r\n" + "Answer was corrent!!!!\r\n" + "Sue now has 2 Gold Coins.\r\n"
@@ -44,14 +46,14 @@ public class GameRunnerTest {
 			+ "They have rolled a 3\r\n" + "Pat is getting out of the penalty box\r\n" + "Pat's new location is 9\r\n"
 			+ "The category is Science\r\n" + "Science Question 4\r\n" + "Answer was correct!!!!\r\n"
 			+ "Pat now has 2 Gold Coins.\r\n" + "Sue is the current player\r\n" + "They have rolled a 2\r\n"
-			+ "Sue's new location is 10\r\n" + "The category is Sports\r\n" + "Sports Question 2\r\n"
+			+ "Sue's new location is 10\r\n" + "The category is Sports\r\n" + "Sport Question 2\r\n"
 			+ "Answer was corrent!!!!\r\n" + "Sue now has 5 Gold Coins.\r\n" + "Chet is the current player\r\n"
 			+ "They have rolled a 4\r\n" + "Chet is not getting out of the penalty box\r\n"
 			+ "Pat is the current player\r\n" + "They have rolled a 3\r\n" + "Pat is getting out of the penalty box\r\n"
 			+ "Pat's new location is 0\r\n" + "The category is Pop\r\n" + "Pop Question 2\r\n"
 			+ "Answer was correct!!!!\r\n" + "Pat now has 3 Gold Coins.\r\n" + "Sue is the current player\r\n"
 			+ "They have rolled a 3\r\n" + "Sue's new location is 1\r\n" + "The category is Science\r\n"
-			+ "Science Question 5\r\n" + "Answer was corrent!!!!\r\n" + "Sue now has 6 Gold Coins.\r\n" + "";
+			+ "Science Question 5\r\n" + "Answer was corrent!!!!\r\n" + "Sue now has 6 Gold Coins.\r\n";
 	
 	private PrintStream sysOutPrintStream;
 	private ByteArrayOutputStream baos;
@@ -72,8 +74,13 @@ public class GameRunnerTest {
 
 	@Test
 	public void testRun() {
+		List<String> players = new ArrayList<String>();
+		players.add("Chet");
+		players.add("Pat");
+		players.add("Sue");
+
 		GameRunner gameRunner = new GameRunner();
-		gameRunner.runWithSeed(3);
+		gameRunner.runWithSeed(3, players);
 		Assert.assertEquals(EXPECTED_RESULT, baos.toString());
 		
 	}

@@ -4,32 +4,28 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game {
-    ArrayList players = new ArrayList();
-    int[] places = new int[6];
-    int[] purses  = new int[6];
-    boolean[] inPenaltyBox  = new boolean[6];
-    int[] highscores= new int[6];
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+	private ArrayList<String> players = new ArrayList<String>();
+	private int[] places = new int[6];
+	private int[] purses = new int[6];
+	private boolean[] inPenaltyBox = new boolean[6];
+
+	private LinkedList<String> popQuestions = new LinkedList<String>();
+	private LinkedList<String> scienceQuestions = new LinkedList<String>();
+	private LinkedList<String> sportsQuestions = new LinkedList<String>();
+	private LinkedList<String> rockQuestions = new LinkedList<String>();
     
-    int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
+	private int currentPlayer = 0;
+	private boolean isGettingOutOfPenaltyBox;
     
     public  Game(){
     	for (int i = 0; i < 50; i++) {
 			popQuestions.addLast("Pop Question " + i);
-			scienceQuestions.addLast(("Science Question " + i));
-			sportsQuestions.addLast(("Sports Question " + i));
-			rockQuestions.addLast(createRockQuestion(i));
+			scienceQuestions.addLast("Science Question " + i);
+			sportsQuestions.addLast("Sport Question " + i);
+			rockQuestions.addLast("Rock Question " + i);
     	}
     }
-
-	public String createRockQuestion(int index){
-		return "Rock Question " + index;
-	}
 
 	/**
 	 * Return true if the game is playable.
@@ -42,8 +38,7 @@ public class Game {
 
 	public boolean add(String playerName) {
 		
-		
-	    players.add(playerName);
+		players.add(playerName);
 	    places[howManyPlayers()] = 0;
 	    purses[howManyPlayers()] = 0;
 	    inPenaltyBox[howManyPlayers()] = false;
@@ -104,10 +99,6 @@ public class Game {
 			System.out.println(rockQuestions.removeFirst());		
 	}
 	
-  public static void main(String[] args) {
-    System.out.println("Hello World!"); // Display the string.
-  }
-
 	// randomly return a category
 	private String currentCategory() {
 		if (places[currentPlayer] == 0) return "Pop";
