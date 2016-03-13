@@ -4,31 +4,34 @@ public class Game {
 
 	private QuestionBox questionBox;
 	private PlayerRegistry playerRegistry;
+	private Board board;
 
-	private int[] places = new int[6];
 	private int[] purses = new int[6];
 	private boolean[] inPenaltyBox = new boolean[6];
 	private boolean isGettingOutOfPenaltyBox;
 
-	public Game(QuestionBox questionBox, PlayerRegistry playerRegistry) {
+	public Game(QuestionBox questionBox, PlayerRegistry playerRegistry, Board board) {
 		this.questionBox = questionBox;
 		this.playerRegistry = playerRegistry;
+		this.board = board;
 	}
 
 	public boolean add(String playerName) {
 		this.playerRegistry.addPlayer(playerName);
-		places[this.playerRegistry.playerNumber()] = 0;
-		purses[this.playerRegistry.playerNumber()] = 0;
-		inPenaltyBox[this.playerRegistry.playerNumber()] = false;
+		int numberOfPlayers = this.playerRegistry.numberOfPlayers();
+
+		this.board.initPlayerInBoard(numberOfPlayers);
+		purses[numberOfPlayers] = 0;
+		inPenaltyBox[numberOfPlayers] = false;
 		System.out.println(playerName + " was added");
-		System.out.println("They are player number " + this.playerRegistry.playerNumber());
+		System.out.println("They are player number " + numberOfPlayers);
 		return true;
 	}
 
 	public void roll(int roll) {
 		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
 		int currentPlayer = this.playerRegistry.getCurrentPlayer();
-
+		int newPosition = 0;
 		System.out.println(currentPlayerName + " is the current player");
 		System.out.println("They have rolled a " + roll);
 
@@ -37,11 +40,9 @@ public class Game {
 				isGettingOutOfPenaltyBox = true;
 
 				System.out.println(currentPlayerName + " is getting out of the penalty box");
-				places[currentPlayer] = places[currentPlayer] + roll;
-				if (places[currentPlayer] > 11)
-					places[currentPlayer] = places[currentPlayer] - 12;
+				newPosition = this.board.movePlayerInBoard(currentPlayer, roll);
 
-				System.out.println(currentPlayerName + "'s new location is " + places[currentPlayer]);
+				System.out.println(currentPlayerName + "'s new location is " + newPosition);
 				System.out.println("The category is " + currentCategory());
 				askQuestion();
 			} else {
@@ -50,11 +51,8 @@ public class Game {
 			}
 
 		} else {
-			places[currentPlayer] = places[currentPlayer] + roll;
-			if (places[currentPlayer] > 11)
-				places[currentPlayer] = places[currentPlayer] - 12;
-
-			System.out.println(currentPlayerName + "'s new location is " + places[currentPlayer]);
+			newPosition = this.board.movePlayerInBoard(currentPlayer, roll);
+			System.out.println(currentPlayerName + "'s new location is " + newPosition);
 			System.out.println("The category is " + currentCategory());
 			askQuestion();
 		}
@@ -68,25 +66,7 @@ public class Game {
 	// randomly return a category
 	private String currentCategory() {
 		int currentPlayer = this.playerRegistry.getCurrentPlayer();
-		if (places[currentPlayer] == 0)
-			return "Pop";
-		if (places[currentPlayer] == 4)
-			return "Pop";
-		if (places[currentPlayer] == 8)
-			return "Pop";
-		if (places[currentPlayer] == 1)
-			return "Science";
-		if (places[currentPlayer] == 5)
-			return "Science";
-		if (places[currentPlayer] == 9)
-			return "Science";
-		if (places[currentPlayer] == 2)
-			return "Sport";
-		if (places[currentPlayer] == 6)
-			return "Sport";
-		if (places[currentPlayer] == 10)
-			return "Sport";
-		return "Rock";
+		return this.board.getCategoryByPlayerPosition(currentPlayer);
 	}
 
 	public boolean wasCorrectlyAnswered() {

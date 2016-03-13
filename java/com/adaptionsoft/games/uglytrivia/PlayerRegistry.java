@@ -19,13 +19,13 @@ public class PlayerRegistry {
 		return this.currentPlayer;
 	}
 
-	public int playerNumber() {
+	public int numberOfPlayers() {
 		return this.players.size();
 	}
 
 	public void advancePlayer() {
 		this.currentPlayer++;
-		if (this.currentPlayer == this.playerNumber())
+		if (this.currentPlayer == this.numberOfPlayers())
 			this.currentPlayer = 0;
 	}
 }

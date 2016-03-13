@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.adaptionsoft.games.uglytrivia.Board;
 import com.adaptionsoft.games.uglytrivia.Game;
 import com.adaptionsoft.games.uglytrivia.PlayerRegistry;
 import com.adaptionsoft.games.uglytrivia.QuestionBox;
@@ -34,7 +35,7 @@ public class GameRunner {
 	}
 
 	private void runRandomGame(Random rand, List<String> players) {
-		Game aGame = new Game(new QuestionBox(), new PlayerRegistry());
+		Game aGame = new Game(new QuestionBox(), new PlayerRegistry(), new Board());
 		for (String player : players) {
 			aGame.add(player);
 		}
