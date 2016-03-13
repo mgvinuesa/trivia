@@ -7,7 +7,6 @@ public class Game {
 	private Board board;
 
 	private int[] purses = new int[6];
-	private boolean isGettingOutOfPenaltyBox;
 
 	public Game(QuestionBox questionBox, PlayerRegistry playerRegistry, Board board) {
 		this.questionBox = questionBox;
@@ -24,7 +23,8 @@ public class Game {
 		return true;
 	}
 
-	public void roll(int roll) {
+	public boolean roll(int roll) {
+		boolean gettingOutOfPenaltyBox = false;
 		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
 		int currentPlayer = this.playerRegistry.getCurrentPlayer();
 		int newPosition = 0;
@@ -32,8 +32,9 @@ public class Game {
 		System.out.println("They have rolled a " + roll);
 
 		if (this.board.isInPenaltyBox(currentPlayer)) {
+
 			if (roll % 2 != 0) {
-				isGettingOutOfPenaltyBox = true;
+				gettingOutOfPenaltyBox = true;
 				System.out.println(currentPlayerName + " is getting out of the penalty box");
 				newPosition = this.board.movePlayerInBoard(currentPlayer, roll);
 
@@ -42,7 +43,7 @@ public class Game {
 				askQuestion();
 			} else {
 				System.out.println(currentPlayerName + " is not getting out of the penalty box");
-				isGettingOutOfPenaltyBox = false;
+				gettingOutOfPenaltyBox = false;
 			}
 
 		} else {
@@ -51,6 +52,7 @@ public class Game {
 			System.out.println("The category is " + currentCategory());
 			askQuestion();
 		}
+		return gettingOutOfPenaltyBox;
 
 	}
 
@@ -64,12 +66,12 @@ public class Game {
 		return this.board.getCategoryByPlayerPosition(currentPlayer);
 	}
 
-	public boolean wasCorrectlyAnswered() {
+	public boolean wasCorrectlyAnswered(boolean gettingOutOfPenaltyBox) {
 		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
 		int currentPlayer = this.playerRegistry.getCurrentPlayer();
 		boolean resultOfAnswer = false;
 		if (this.board.isInPenaltyBox(currentPlayer)) {
-			if (isGettingOutOfPenaltyBox) {
+			if (gettingOutOfPenaltyBox) {
 				System.out.println("Answer was correct!!!!");
 				purses[currentPlayer]++;
 				System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
