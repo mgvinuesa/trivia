@@ -3,13 +3,23 @@ package com.adaptionsoft.games.uglytrivia;
 public class Board {
 
 	private int[] places = new int[6];
+	private boolean[] inPenaltyBox = new boolean[6];
 
 	public void initPlayerInBoard(int playerNumber) {
 		places[playerNumber] = 0;
+		inPenaltyBox[playerNumber] = false;
 	}
 
 	public int getPlayerPositionInBoard(int playerNumber) {
 		return this.places[playerNumber];
+	}
+
+	public boolean isInPenaltyBox(int playerNumber) {
+		return this.inPenaltyBox[playerNumber];
+	}
+
+	public void setPlayerToPenalyBox(int playerNumber) {
+		this.inPenaltyBox[playerNumber] = true;
 	}
 
 	public int movePlayerInBoard(int playerNumber, int positions) {
