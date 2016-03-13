@@ -53,11 +53,6 @@ public class Game {
 		return true;
 	}
 	
-	public boolean remove(String playerName) {
-	  players.remove(howManyPlayers());
-	  return true;
-	}
-	
 	public int howManyPlayers() {
 		return players.size();
 	}
@@ -177,20 +172,7 @@ public class Game {
 		return true;
 	}
 
-	public static class SimpleSingleton {
-    private static SimpleSingleton singleInstance =  new SimpleSingleton();
- 
-    //Marking default constructor private
-    //to avoid direct instantiation.
-    private SimpleSingleton() {
-    }
- 
-    //Get instance for class SimpleSingleton
-    public static SimpleSingleton getInstance() {
- 
-        return singleInstance;
-  }
-}
+
 	/**
 	 * Tells if the last player won.
 	 */
