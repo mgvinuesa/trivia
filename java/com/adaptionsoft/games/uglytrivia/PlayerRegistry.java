@@ -23,7 +23,9 @@ public class PlayerRegistry {
 		return this.players.size();
 	}
 
-	public void changeCurrentPlayer(int currentPlayer) {
-		this.currentPlayer = currentPlayer;
+	public void advancePlayer() {
+		this.currentPlayer++;
+		if (this.currentPlayer == this.playerNumber())
+			this.currentPlayer = 0;
 	}
 }

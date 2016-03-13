@@ -93,59 +93,40 @@ public class Game {
 		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
 		int currentPlayer = this.playerRegistry.getCurrentPlayer();
 
-		try {
-			if (inPenaltyBox[currentPlayer]) {
-				if (isGettingOutOfPenaltyBox) {
-					System.out.println("Answer was correct!!!!");
-					purses[currentPlayer]++;
-					System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
-
-					boolean winner = didPlayerWin();
-					currentPlayer++;
-					if (currentPlayer == this.playerRegistry.playerNumber())
-						currentPlayer = 0;
-
-					return winner;
-				} else {
-					currentPlayer++;
-					if (currentPlayer == this.playerRegistry.playerNumber())
-						currentPlayer = 0;
-					return true;
-				}
-
-			} else {
-
-				System.out.println("Answer was corrent!!!!");
+		if (inPenaltyBox[currentPlayer]) {
+			if (isGettingOutOfPenaltyBox) {
+				System.out.println("Answer was correct!!!!");
 				purses[currentPlayer]++;
 				System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
 
 				boolean winner = didPlayerWin();
-				currentPlayer++;
-				if (currentPlayer == this.playerRegistry.playerNumber())
-					currentPlayer = 0;
-
+				this.playerRegistry.advancePlayer();
 				return winner;
-
+			} else {
+				this.playerRegistry.advancePlayer();
+				return true;
 			}
-		} finally {
-			this.playerRegistry.changeCurrentPlayer(currentPlayer);
+
+		} else {
+
+			System.out.println("Answer was corrent!!!!");
+			purses[currentPlayer]++;
+			System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
+
+			boolean winner = didPlayerWin();
+			this.playerRegistry.advancePlayer();
+			return winner;
+
 		}
 	}
 
 	public boolean wrongAnswer() {
 		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
 		int currentPlayer = this.playerRegistry.getCurrentPlayer();
-		try {
 		System.out.println("Question was incorrectly answered");
 		System.out.println(currentPlayerName + " was sent to the penalty box");
 		inPenaltyBox[currentPlayer] = true;
-
-		currentPlayer++;
-		if (currentPlayer == this.playerRegistry.playerNumber())
-			currentPlayer = 0;
-		} finally {
-			this.playerRegistry.changeCurrentPlayer(currentPlayer);
-		}
+		this.playerRegistry.advancePlayer();
 		return true;
 	}
 
