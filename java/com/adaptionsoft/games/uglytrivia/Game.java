@@ -92,19 +92,15 @@ public class Game {
 	public boolean wasCorrectlyAnswered() {
 		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
 		int currentPlayer = this.playerRegistry.getCurrentPlayer();
-
+		boolean resultOfAnswer = false;
 		if (inPenaltyBox[currentPlayer]) {
 			if (isGettingOutOfPenaltyBox) {
 				System.out.println("Answer was correct!!!!");
 				purses[currentPlayer]++;
 				System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
-
-				boolean winner = didPlayerWin();
-				this.playerRegistry.advancePlayer();
-				return winner;
+				resultOfAnswer = didPlayerWin();
 			} else {
-				this.playerRegistry.advancePlayer();
-				return true;
+				resultOfAnswer = true;
 			}
 
 		} else {
@@ -112,12 +108,10 @@ public class Game {
 			System.out.println("Answer was corrent!!!!");
 			purses[currentPlayer]++;
 			System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
-
-			boolean winner = didPlayerWin();
-			this.playerRegistry.advancePlayer();
-			return winner;
-
+			resultOfAnswer = didPlayerWin();
 		}
+		this.playerRegistry.advancePlayer();
+		return resultOfAnswer;
 	}
 
 	public boolean wrongAnswer() {
