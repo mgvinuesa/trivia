@@ -17,9 +17,7 @@ public class Game {
 	}
 
 	public boolean add(String playerName) {
-		this.playerRegistry.addPlayer(playerName);
-		int numberOfPlayers = this.playerRegistry.numberOfPlayers();
-
+		int numberOfPlayers = this.playerRegistry.addPlayer(playerName);
 		this.board.initPlayerInBoard(numberOfPlayers);
 		purses[numberOfPlayers] = 0;
 		inPenaltyBox[numberOfPlayers] = false;

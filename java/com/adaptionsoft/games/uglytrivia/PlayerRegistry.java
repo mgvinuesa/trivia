@@ -7,8 +7,9 @@ public class PlayerRegistry {
 	private ArrayList<String> players = new ArrayList<String>();
 	private int currentPlayer = 0;
 
-	public void addPlayer(String playerName) {
+	public int addPlayer(String playerName) {
 		this.players.add(playerName);
+		return this.players.size();
 	}
 
 	public String getCurrentPlayerName() {
