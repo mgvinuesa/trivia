@@ -13,14 +13,15 @@ import com.adaptionsoft.games.uglytrivia.QuestionBox;
 
 public class GameRunner {
 
-	private boolean notAWinner;
-
 	public static void main(String[] args) {
 		GameRunner gameRunner = new GameRunner();
 		List<String> players = new ArrayList<String>();
 		players.add("Chet");
 		players.add("Pat");
 		players.add("Sue");
+		players.add("Manuel");
+		players.add("Dan");
+		players.add("Jack");
 		gameRunner.run(players);
 	}
 
@@ -35,18 +36,12 @@ public class GameRunner {
 	}
 
 	private void runRandomGame(Random rand, List<String> players) {
-		Game aGame = new Game(new QuestionBox(), new PlayerRegistry(), new Board());
+		Game aGame = new Game(new QuestionBox(), new PlayerRegistry(), new Board(), rand);
 		for (String player : players) {
 			aGame.add(player);
 		}
-		boolean gettingOutOfPenaltyBox = false;
+
 		do {
-			gettingOutOfPenaltyBox = aGame.roll(rand.nextInt(5) + 1);
-			if (rand.nextInt(9) == 7) {
-				notAWinner = aGame.wrongAnswer();
-			} else {
-				notAWinner = aGame.wasCorrectlyAnswered(gettingOutOfPenaltyBox);
-			}
-		} while (notAWinner);
+		} while (aGame.newTurn());
 	}
 }

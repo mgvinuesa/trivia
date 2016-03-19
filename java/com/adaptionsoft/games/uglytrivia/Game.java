@@ -1,15 +1,19 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import java.util.Random;
+
 public class Game {
 
 	private QuestionBox questionBox;
 	private PlayerRegistry playerRegistry;
 	private Board board;
+	private Random rand;
 
-	public Game(QuestionBox questionBox, PlayerRegistry playerRegistry, Board board) {
+	public Game(QuestionBox questionBox, PlayerRegistry playerRegistry, Board board, Random rand) {
 		this.questionBox = questionBox;
 		this.playerRegistry = playerRegistry;
 		this.board = board;
+		this.rand = rand;
 	}
 
 	public boolean add(String playerName) {
@@ -105,5 +109,16 @@ public class Game {
 	 */
 	private boolean didPlayerWin() {
 		return !(this.playerRegistry.getCurrentPlayer().getPurse() == 6);
+	}
+
+	public boolean newTurn() {
+		boolean continueGame;
+		boolean gettingOutOfPenaltyBox = this.roll(rand.nextInt(5) + 1);
+		if (rand.nextInt(9) == 7) {
+			continueGame = this.wrongAnswer();
+		} else {
+			continueGame = this.wasCorrectlyAnswered(gettingOutOfPenaltyBox);
+		}
+		return continueGame;
 	}
 }
