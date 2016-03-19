@@ -4,20 +4,17 @@ import java.util.ArrayList;
 
 public class PlayerRegistry {
 
-	private ArrayList<String> players = new ArrayList<String>();
+	private ArrayList<Player> players = new ArrayList<Player>();
 	private int currentPlayer = 0;
 
-	public int addPlayer(String playerName) {
-		this.players.add(playerName);
-		return this.players.size();
+	public Player addPlayer(String playerName) {
+		Player player = new Player(this.players.size(), playerName);
+		this.players.add(player);
+		return player;
 	}
 
-	public String getCurrentPlayerName() {
+	public Player getCurrentPlayer() {
 		return this.players.get(this.currentPlayer);
-	}
-
-	public int getCurrentPlayer() {
-		return this.currentPlayer;
 	}
 
 	public int numberOfPlayers() {

@@ -6,8 +6,6 @@ public class Game {
 	private PlayerRegistry playerRegistry;
 	private Board board;
 
-	private int[] purses = new int[6];
-
 	public Game(QuestionBox questionBox, PlayerRegistry playerRegistry, Board board) {
 		this.questionBox = questionBox;
 		this.playerRegistry = playerRegistry;
@@ -15,28 +13,28 @@ public class Game {
 	}
 
 	public boolean add(String playerName) {
-		int numberOfPlayers = this.playerRegistry.addPlayer(playerName);
-		this.board.initPlayerInBoard(numberOfPlayers);
-		purses[numberOfPlayers] = 0;
+		Player player = this.playerRegistry.addPlayer(playerName);
+		this.board.initPlayerInBoard(player.getId());
 		System.out.println(playerName + " was added");
-		System.out.println("They are player number " + numberOfPlayers);
+		System.out.println("They are player number " + this.playerRegistry.numberOfPlayers());
 		return true;
 	}
 
 	public boolean roll(int roll) {
 		boolean gettingOutOfPenaltyBox = false;
-		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
-		int currentPlayer = this.playerRegistry.getCurrentPlayer();
+		Player player = this.playerRegistry.getCurrentPlayer();
+		String currentPlayerName = player.getName();
+		int currentPlayerId = player.getId();
 		int newPosition = 0;
 		System.out.println(currentPlayerName + " is the current player");
 		System.out.println("They have rolled a " + roll);
 
-		if (this.board.isInPenaltyBox(currentPlayer)) {
+		if (this.board.isInPenaltyBox(currentPlayerId)) {
 
 			if (roll % 2 != 0) {
 				gettingOutOfPenaltyBox = true;
 				System.out.println(currentPlayerName + " is getting out of the penalty box");
-				newPosition = this.board.movePlayerInBoard(currentPlayer, roll);
+				newPosition = this.board.movePlayerInBoard(currentPlayerId, roll);
 
 				System.out.println(currentPlayerName + "'s new location is " + newPosition);
 				System.out.println("The category is " + currentCategory());
@@ -47,7 +45,7 @@ public class Game {
 			}
 
 		} else {
-			newPosition = this.board.movePlayerInBoard(currentPlayer, roll);
+			newPosition = this.board.movePlayerInBoard(currentPlayerId, roll);
 			System.out.println(currentPlayerName + "'s new location is " + newPosition);
 			System.out.println("The category is " + currentCategory());
 			askQuestion();
@@ -62,29 +60,29 @@ public class Game {
 
 	// randomly return a category
 	private String currentCategory() {
-		int currentPlayer = this.playerRegistry.getCurrentPlayer();
+		int currentPlayer = this.playerRegistry.getCurrentPlayer().getId();
 		return this.board.getCategoryByPlayerPosition(currentPlayer);
 	}
 
 	public boolean wasCorrectlyAnswered(boolean gettingOutOfPenaltyBox) {
-		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
-		int currentPlayer = this.playerRegistry.getCurrentPlayer();
+		Player player = this.playerRegistry.getCurrentPlayer();
+		String currentPlayerName = player.getName();
+		int currentPlayerId = player.getId();
 		boolean resultOfAnswer = false;
-		if (this.board.isInPenaltyBox(currentPlayer)) {
+		if (this.board.isInPenaltyBox(currentPlayerId)) {
 			if (gettingOutOfPenaltyBox) {
 				System.out.println("Answer was correct!!!!");
-				purses[currentPlayer]++;
-				System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
+				int currentPurses = player.addPurse();
+				System.out.println(currentPlayerName + " now has " + currentPurses + " Gold Coins.");
 				resultOfAnswer = didPlayerWin();
 			} else {
 				resultOfAnswer = true;
 			}
 
 		} else {
-
 			System.out.println("Answer was corrent!!!!");
-			purses[currentPlayer]++;
-			System.out.println(currentPlayerName + " now has " + purses[currentPlayer] + " Gold Coins.");
+			int currentPurses = player.addPurse();
+			System.out.println(currentPlayerName + " now has " + currentPurses + " Gold Coins.");
 			resultOfAnswer = didPlayerWin();
 		}
 		this.playerRegistry.advancePlayer();
@@ -92,11 +90,12 @@ public class Game {
 	}
 
 	public boolean wrongAnswer() {
-		String currentPlayerName = this.playerRegistry.getCurrentPlayerName();
-		int currentPlayer = this.playerRegistry.getCurrentPlayer();
+		Player player = this.playerRegistry.getCurrentPlayer();
+		String currentPlayerName = player.getName();
+		int currentPlayerId = player.getId();
 		System.out.println("Question was incorrectly answered");
 		System.out.println(currentPlayerName + " was sent to the penalty box");
-		this.board.setPlayerToPenalyBox(currentPlayer);
+		this.board.setPlayerToPenalyBox(currentPlayerId);
 		this.playerRegistry.advancePlayer();
 		return true;
 	}
@@ -105,6 +104,6 @@ public class Game {
 	 * Tells if the last player won.
 	 */
 	private boolean didPlayerWin() {
-		return !(purses[this.playerRegistry.getCurrentPlayer()] == 6);
+		return !(this.playerRegistry.getCurrentPlayer().getPurse() == 6);
 	}
 }
