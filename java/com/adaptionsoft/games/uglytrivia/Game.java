@@ -7,16 +7,17 @@ public class Game {
 	private QuestionBox questionBox;
 	private PlayerRegistry playerRegistry;
 	private Board board;
-	private Random rand;
+	private Random engine;
+
 
 	public Game(QuestionBox questionBox, PlayerRegistry playerRegistry, Board board, Random rand) {
 		this.questionBox = questionBox;
 		this.playerRegistry = playerRegistry;
 		this.board = board;
-		this.rand = rand;
+		this.engine = rand;
 	}
 
-	public boolean add(String playerName) {
+	public boolean addNewPlayer(String playerName) {
 		Player player = this.playerRegistry.addPlayer(playerName);
 		this.board.initPlayerInBoard(player.getId());
 		System.out.println(playerName + " was added");
@@ -24,7 +25,8 @@ public class Game {
 		return true;
 	}
 
-	public boolean roll(int roll) {
+	public boolean roll() {
+		int roll = engine.nextInt(5) + 1;
 		boolean gettingOutOfPenaltyBox = false;
 		Player player = this.playerRegistry.getCurrentPlayer();
 		String currentPlayerName = player.getName();
@@ -113,8 +115,8 @@ public class Game {
 
 	public boolean newTurn() {
 		boolean continueGame;
-		boolean gettingOutOfPenaltyBox = this.roll(rand.nextInt(5) + 1);
-		if (rand.nextInt(9) == 7) {
+		boolean gettingOutOfPenaltyBox = this.roll();
+		if (engine.nextInt(9) == 7) {
 			continueGame = this.wrongAnswer();
 		} else {
 			continueGame = this.wasCorrectlyAnswered(gettingOutOfPenaltyBox);

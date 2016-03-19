@@ -38,7 +38,7 @@ public class GameRunner {
 	private void runRandomGame(Random rand, List<String> players) {
 		Game aGame = new Game(new QuestionBox(), new PlayerRegistry(), new Board(), rand);
 		for (String player : players) {
-			aGame.add(player);
+			aGame.addNewPlayer(player);
 		}
 
 		do {
